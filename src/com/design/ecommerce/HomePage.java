@@ -1,12 +1,13 @@
 package com.design.ecommerce;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class HomePage {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Sample user
+
         User user = new User("john_doe", "password123");
 
         System.out.println("Welcome to the E-commerce application!");
@@ -15,7 +16,7 @@ public class HomePage {
             System.out.println("1. Login");
             System.out.println("2. Exit");
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Consume newline
 
             if (choice == 1) {
                 System.out.print("Enter username: ");
@@ -32,18 +33,26 @@ public class HomePage {
                         System.out.println("3. Checkout");
                         System.out.println("4. Logout");
                         int userChoice = scanner.nextInt();
-                        scanner.nextLine();
+                        scanner.nextLine();  // Consume newline
 
                         if (userChoice == 1) {
                             System.out.println("Cart: " + user.viewCart().getItems());
                         } else if (userChoice == 2) {
-                            System.out.print("Enter item name: ");
-                            String itemName = scanner.nextLine();
-                            System.out.print("Enter item price: ");
-                            double itemPrice = scanner.nextDouble();
+                            List<Item> availableItems = user.getAvailableItems();
+                            System.out.println("Available Items:");
+                            for (int i = 0; i < availableItems.size(); i++) {
+                                System.out.println((i + 1) + ". " + availableItems.get(i));
+                            }
+                            System.out.print("Select an item to add to the cart: ");
+                            int itemChoice = scanner.nextInt();
                             scanner.nextLine();  // Consume newline
-                            Item item = new Item(itemName, itemPrice);
-                            user.addToCart(item);
+
+                            if (itemChoice > 0 && itemChoice <= availableItems.size()) {
+                                user.addToCart(availableItems.get(itemChoice - 1));
+                                System.out.println("Item added to cart.");
+                            } else {
+                                System.out.println("Invalid choice.");
+                            }
                         } else if (userChoice == 3) {
                             user.checkout();
                             System.out.println("Order placed successfully!");
