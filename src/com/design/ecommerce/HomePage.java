@@ -16,7 +16,7 @@ public class HomePage {
             System.out.println("1. Login");
             System.out.println("2. Exit");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             if (choice == 1) {
                 System.out.print("Enter username: ");
