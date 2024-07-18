@@ -2,15 +2,14 @@ package com.design.ecommerce;
 
 import java.util.List;
 import java.util.Scanner;
-//
+
 public class HomePage {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        User user = new User("Alice", "1234");
 
-        User user = new User("john_doe", "password123");
-
-        System.out.println("Welcome to the E-commerce application!");
+        System.out.println("Welcome to the clothing store app!");
 
         while (true) {
             System.out.println("1. Login");
@@ -36,7 +35,18 @@ public class HomePage {
                         scanner.nextLine();  // Consume newline
 
                         if (userChoice == 1) {
-                            System.out.println("Cart: " + user.viewCart().getItems());
+                            Cart cart = user.viewCart();
+                            System.out.println("Cart Items: " + cart.getItems());
+                            System.out.println("Total Price: $" + cart.getTotalPrice());
+                            // Show discounts and reasons if any
+                            Order tempOrder = new Order(cart.getItems());
+                            new PriceObserver().update(tempOrder);
+                            new QuantityObserver().update(tempOrder);
+                            if (tempOrder.getDiscount() > 0) {
+                                System.out.println("Discount Applied: $" + tempOrder.getDiscount());
+                                System.out.println("Discount Reason: " + tempOrder.getDiscountReason());
+                            }
+                            System.out.println("Shipping Cost: $" + tempOrder.getShippingCost());
                         } else if (userChoice == 2) {
                             List<Item> availableItems = user.getAvailableItems();
                             System.out.println("Available Items:");
