@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
+    private static int idCounter = 0;
+    private int id;
     private List<OrderObserver> observers = new ArrayList<>();
     private List<Item> items;
     private double totalPrice;
@@ -13,10 +15,15 @@ public class Order {
     private String discountReason = "";
 
     public Order(List<Item> items) {
+        this.id = ++idCounter;
         this.items = new ArrayList<>(items);
         this.totalPrice = items.stream().mapToDouble(Item::getPrice).sum();
         this.itemCount = items.size();
         notifyObservers();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void attach(OrderObserver observer) {
@@ -68,7 +75,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [totalPrice=" + totalPrice + ", itemCount=" + itemCount + ", shippingCost=" + shippingCost +
+        return "Order [id=" + id + ", totalPrice=" + totalPrice + ", itemCount=" + itemCount + ", shippingCost=" + shippingCost +
                 ", discount=" + discount + ", discountReason='" + discountReason + "']";
     }
 }

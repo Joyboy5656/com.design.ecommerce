@@ -9,13 +9,13 @@ public class HomePage {
 
         User user = new User("Alice", "1234");
 
-        System.out.println("Welcome to the clothing store app!");
+        System.out.println("Welcome to the E-commerce application!");
 
         while (true) {
             System.out.println("1. Login");
             System.out.println("2. Exit");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
             if (choice == 1) {
                 System.out.print("Enter username: ");
@@ -32,13 +32,13 @@ public class HomePage {
                         System.out.println("3. Checkout");
                         System.out.println("4. Logout");
                         int userChoice = scanner.nextInt();
-                        scanner.nextLine();  // Consume newline
+                        scanner.nextLine();
 
                         if (userChoice == 1) {
                             Cart cart = user.viewCart();
                             System.out.println("Cart Items: " + cart.getItems());
                             System.out.println("Total Price: $" + cart.getTotalPrice());
-                            // Show discounts and reasons if any
+
                             Order tempOrder = new Order(cart.getItems());
                             new PriceObserver().update(tempOrder);
                             new QuantityObserver().update(tempOrder);
@@ -55,7 +55,7 @@ public class HomePage {
                             }
                             System.out.print("Select an item to add to the cart: ");
                             int itemChoice = scanner.nextInt();
-                            scanner.nextLine();  // Consume newline
+                            scanner.nextLine();
 
                             if (itemChoice > 0 && itemChoice <= availableItems.size()) {
                                 user.addToCart(availableItems.get(itemChoice - 1));
@@ -64,8 +64,9 @@ public class HomePage {
                                 System.out.println("Invalid choice.");
                             }
                         } else if (userChoice == 3) {
-                            user.checkout();
-                            System.out.println("Order placed successfully!");
+                            Order order = user.checkout();
+                            System.out.println("Order placed successfully! Order ID: " + order.getId());
+                            System.out.println("Order Details: " + order);
                         } else if (userChoice == 4) {
                             user.logout();
                             break;
