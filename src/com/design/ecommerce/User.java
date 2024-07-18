@@ -21,7 +21,6 @@ public class User {
     }
 
     public void logout() {
-        // Implement logout functionality
     }
 
     public Cart viewCart() {
@@ -32,12 +31,13 @@ public class User {
         cart.addItem(item);
     }
 
-    public void checkout() {
+    public Order checkout() {
         Order order = new Order(cart.getItems());
         order.attach(new PriceObserver());
         order.attach(new QuantityObserver());
         orderHistory.add(order);
         cart.clear();
+        return order;
     }
 
     public List<Item> getAvailableItems() {
