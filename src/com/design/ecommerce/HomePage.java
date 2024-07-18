@@ -7,7 +7,7 @@ public class HomePage {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        User user = new User("Alice", "1234");
+        User user = new User("john_doe", "password123");
 
         System.out.println("Welcome to the E-commerce application!");
 
