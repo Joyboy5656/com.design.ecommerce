@@ -1,5 +1,6 @@
 package com.design.ecommerce;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class HomePage {
@@ -34,18 +35,38 @@ public class HomePage {
                         scanner.nextLine();
 
                         if (userChoice == 1) {
-                            System.out.println("Cart: " + user.viewCart().getItems());
+                            Cart cart = user.viewCart();
+                            System.out.println("Cart Items: " + cart.getItems());
+                            System.out.println("Total Price: $" + cart.getTotalPrice());
+
+                            Order tempOrder = new Order(cart.getItems());
+                            new PriceObserver().update(tempOrder);
+                            new QuantityObserver().update(tempOrder);
+                            if (tempOrder.getDiscount() > 0) {
+                                System.out.println("Discount Applied: $" + tempOrder.getDiscount());
+                                System.out.println("Discount Reason: " + tempOrder.getDiscountReason());
+                            }
+                            System.out.println("Shipping Cost: $" + tempOrder.getShippingCost());
                         } else if (userChoice == 2) {
-                            System.out.print("Enter item name: ");
-                            String itemName = scanner.nextLine();
-                            System.out.print("Enter item price: ");
-                            double itemPrice = scanner.nextDouble();
-                            scanner.nextLine();  // Consume newline
-                            Item item = new Item(itemName, itemPrice);
-                            user.addToCart(item);
+                            List<Item> availableItems = user.getAvailableItems();
+                            System.out.println("Available Items:");
+                            for (int i = 0; i < availableItems.size(); i++) {
+                                System.out.println((i + 1) + ". " + availableItems.get(i));
+                            }
+                            System.out.print("Select an item to add to the cart: ");
+                            int itemChoice = scanner.nextInt();
+                            scanner.nextLine();
+
+                            if (itemChoice > 0 && itemChoice <= availableItems.size()) {
+                                user.addToCart(availableItems.get(itemChoice - 1));
+                                System.out.println("Item added to cart.");
+                            } else {
+                                System.out.println("Invalid choice.");
+                            }
                         } else if (userChoice == 3) {
-                            user.checkout();
-                            System.out.println("Order placed successfully!");
+                            Order order = user.checkout();
+                            System.out.println("Order placed successfully! Order ID: " + order.getId());
+                            System.out.println("Order Details: " + order);
                         } else if (userChoice == 4) {
                             user.logout();
                             break;
