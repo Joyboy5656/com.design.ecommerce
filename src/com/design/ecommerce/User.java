@@ -21,7 +21,7 @@ public class User {
     }
 
     public void logout() {
-        // Implement logout functionality
+
     }
 
     public Cart viewCart() {
